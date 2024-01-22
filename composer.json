@@ -1,0 +1,22 @@
+{
+    "name": "engagespot/php-sdk",
+    "description": "This is the php library for Engagespot",
+    "type": "library",
+    "require": {
+        "php": "^7.0 || ^8.0",
+        "guzzlehttp/guzzle": "^7.8",
+        "firebase/php-jwt": "^6.10"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Engagespot\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Engagespot Inc"
+        }
+    ],
+    "minimum-stability": "stable"
+}
