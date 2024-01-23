@@ -170,5 +170,4 @@ Replace placeholder values such as `'your-api-key'`, `'your-api-secret'`, and `'
 
 For detailed information about Engagespot API parameters, refer to the [Engagespot API documentation](https://www.engagespot.co/docs/api).
 
-Feel free to explore and customize the SDK based on your specific requirements!
-```
+Feel free to explore and contribute to the SDK!
