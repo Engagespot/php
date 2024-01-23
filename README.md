@@ -20,7 +20,7 @@ Sign up for an account on [Engagespot](https://www.engagespot.co/) and acquire y
 
 Include the Engagespot PHP SDK in your PHP code and create an instance of `EngagespotClient` with your API key, API secret, and signing key (if applicable):
 
-Sure, here are examples of the two types of initializations for the `EngagespotClient`:
+here are examples of the two types of initializations for the `EngagespotClient`:
 
 1. **Initialization with individual parameters:**
 
