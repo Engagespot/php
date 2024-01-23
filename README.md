@@ -128,22 +128,39 @@ $notificationData = [
 #### Generating User Token
 
 Generate a JWT token for a user for authentication:
-Remember that for generating user token you must need to Initialize engagespot via associative array because signingKey is required for generating user tokens
+
+
+Note : Remember that for generating user token you must need to Initialize engagespot via associative array  OR by 
+```php 
+$enagagespot->setSigningKey($signingKey);
+```
+because signingKey is required for generating user tokens
 
 
 ```php
 use Engagespot\EngagespotClient;
 
-$config = [
-    'apiKey' => 'your-api-key',
-    'apiSecret' => 'your-api-secret',
-    'signingKey' => 'your-signing-key',
-    'baseUrl' => 'https://api.engagespot.co/v3'
-];
+
+$apiKey = 'your-api-key';
+$apiSecret = 'your-api-secret';
+$signingKey = 'your-signing-key';
 
 // Create an instance of EngagespotClient
-$engagespot = new EngagespotClient($config);
+$engagespot = new EngagespotClient( [
+    'apiKey' => $apiKey,
+    'apiSecret' => $apiSecret,
+    'signingKey' => $signingKey,
+    'baseUrl' => 'https://api.engagespot.co/v3' // optional
+]);
 
+OR
+
+// Create an instance of EngagespotClient
+$engagespot = new EngagespotClient($apiKey, $apiSecret);
+$enagagespot->setSigningKey($signingKey);
+
+
+// Create JWT token for user
 $userIdentifier = 'testuser@example.com';
 $token = $engagespot->generateUserToken($userIdentifier);
 
