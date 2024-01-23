@@ -159,6 +159,14 @@ Set additional configuration options if needed:
 ```php
 $engagespot->setConfig('additionalConfig', 'value');
 ```
+You can set SigningKey after initializing `EngagespotClient` by
+
+```php
+
+$signingKey = 'your-signing-key';
+$enagagespot->setSigningKey($signingKey);
+
+```
 
 ## Exceptions
 
