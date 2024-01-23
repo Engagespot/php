@@ -64,18 +64,27 @@ Remember to replace `'your-api-key'`, `'your-api-secret'`, and `'your-signing-ke
 
 Prepare notification data and use the `send` method:
 
+### Legacy Payload
+
 ```php
 $notificationData = [
     'notification' => [
         'title' => 'Sample Title',
         'message' => 'Sample Message',
-        // Add other notification properties as needed
+        'icon' => 'sample-icon',
+        'url' => 'https://example.com',
+        'templateId' => 1,
     ],
-    'sendTo' => [
-        'topics' => ['topic1', 'topic2'],
-        'recipients' => ['user1@example.com', 'user2@example.com'],
+    'override' => [
+        'channels' => ['inApp', 'webPush'],
+        // other properties you want ot override
     ],
-    // Add other notification options as needed
+    'recipients' => ['user3@example.com'],
+    'category' => 'overrideCategory',
+    'data' => [
+        // custom data as you needed
+        ],
+    ],
 ];
 
 $response = $engagespot->send($notificationData);
@@ -84,6 +93,37 @@ $response = $engagespot->send($notificationData);
 var_dump($response);
 ```
 
+### Preferred Payload
+
+```php
+$notificationData = [
+    'notification' => [
+        'title' => 'Sample Title',
+        'message' => 'Sample Message',
+        'icon' => 'sample-icon',
+        'url' => 'https://example.com',
+        'templateIdentifier' => 'sampleTemplate',
+        'category' => 'sampleCategory',
+        'data' => [
+            // custom data as you need
+        ],
+    ],
+    'sendTo' => [
+        'topics' => ['topic1', 'topic2'],
+        'recipients' => ['user1@example.com', 'user2@example.com'],
+    ],
+    'override' => [
+        'channels' => ['inApp', 'webPush'],
+        // other properties you want to override
+    ],
+];
+```
+
+### Sending the notification
+
+```php
+ $response = $engagespot->send($notificationData);
+```
 
 #### Generating User Token
 
