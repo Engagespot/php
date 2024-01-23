@@ -193,6 +193,6 @@ The SDK throws `\InvalidArgumentException` for missing or invalid parameters dur
 
 Replace placeholder values such as `'your-api-key'`, `'your-api-secret'`, and `'your-signing-key'` with your actual Engagespot API credentials.
 
-For detailed information about Engagespot API parameters, refer to the [Engagespot API documentation](https://www.engagespot.co/docs/api).
+For detailed information about Engagespot API parameters, refer to the [Engagespot API documentation](https://documentation.engagespot.co/docs/rest-api#tag/Notifications).
 
 Feel free to explore and contribute to the SDK!
