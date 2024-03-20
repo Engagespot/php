@@ -142,7 +142,7 @@ class EngagespotClient
             'apiKey' => $apiKey,
         ];
 
-        $token = JWT::encode($payload, $signingKey, 'HS256');
+        $token = JWT::encode($payload, $signingKey, 'RS256');
 
         return $token;
     }
