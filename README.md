@@ -185,6 +185,15 @@ $token = $engagespot->generateUserToken($userIdentifier);
 var_dump($token);
 ```
 
+### Creating Signing Key
+
+You can generate your public-private signing key pair from Engagespot console, and this private key should be the secret signing key for generating user tokens
+
+<img width="698" alt="signing_key-71ae93037d6197a7db8a1894c2293079" src="https://github.com/Engagespot/php/assets/129726530/6dfe590a-fd57-4ef0-a0b7-83cee8470538">
+
+NOTE: When you generate the signing key, Engagespot will store <b>only</b> the public key in our database.
+You should download the private key and use it for signing your user tokens. You won't be able to retrieve the private key after this step.
+
 
 ### Additional Configuration
 
