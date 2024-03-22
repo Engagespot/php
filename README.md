@@ -124,6 +124,23 @@ $notificationData = [
 ```php
  $response = $engagespot->send($notificationData);
 ```
+### Create OR Update User
+
+```php
+use Engagespot\EngagespotClient;
+
+$identifier = 'johndoe@test.com'; // your unique identifier
+$profile = [
+    'email' => 'johndoe@test.com',
+    'any_key' => 'any_value'
+];
+
+$engagespot = new EngagespotClient($apiKey, $apiSecret);
+$enagagespot->createOrUpdateUser($identifier, $profile);
+
+```
+You can add any keyvalue pairs to profile.
+
 
 #### Generating User Token
 
