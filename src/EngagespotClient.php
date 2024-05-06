@@ -3,6 +3,7 @@
 namespace Engagespot;
 
 use Firebase\JWT\JWT;
+use GuzzleHttp\Exception\RequestException;
 
 /**
  * EngagespotClient - A client for interacting with Engagespot API.
@@ -10,7 +11,11 @@ use Firebase\JWT\JWT;
 class EngagespotClient
 {
     use Configurable;
-    protected $requestHandler;
+    public $requestHandler;
+    protected $topics;
+    protected $users;
+    protected $inapp;
+
 
     /**
      * Constructor for EngagespotClient.
@@ -34,6 +39,9 @@ class EngagespotClient
 
         // Initialize the request handler.
         $this->requestHandler = new RequestHandler();
+        $this->topics = new Topics($this);
+        $this->users = new Users($this);
+        $this->inapp = new Inapp($this);
     }
 
     /**
@@ -152,7 +160,7 @@ class EngagespotClient
      *
      * @return array The request headers.
      */
-    private function getRequestHeaders()
+    public function getRequestHeaders()
     {
         // Basic headers required for Engagespot API.
         $headers = [
@@ -187,4 +195,77 @@ class EngagespotClient
     {
         return $this->config;
     }
+
+    /**
+     * Create a category in Engagespot.
+     *
+     * @param string $identifier The unique identifier for the category.
+     * @param string $categoryName The name of the category.
+     *
+     * @return mixed The response from the API.
+     */
+    public function createCategory($identifier, $categoryName)
+    {
+        try {
+            return $this->requestHandler->handleRequest(
+                'POST',
+                $this->getBaseUrl() . '/notifications/categories',
+                ['identifier' => $identifier, 'name' => $categoryName],
+                $this->getRequestHeaders()
+            );
+        } catch (RequestException $e) {
+            $this->handleRequestException($e);
+        }
+    }
+
+    /**
+     * Delete a category from Engagespot.
+     *
+     * @param int $categoryId The ID of the category to delete.
+     *
+     * @return mixed The response from the API.
+     */
+    public function deleteCategory($categoryId)
+    {
+        try {
+            return $this->requestHandler->handleRequest(
+                'DELETE',
+                $this->getBaseUrl() . "/notifications/categories/{$categoryId}",
+                [],
+                $this->getRequestHeaders()
+            );
+        } catch (RequestException $e) {
+            $this->handleRequestException($e);
+        }
+    }
+
+
+
+    /**
+     * Handle Guzzle HTTP request exception.
+     *
+     * @param RequestException $e The Guzzle HTTP request exception.
+     *
+     * @throws RequestException
+     */
+    private function handleRequestException(RequestException $e)
+    {
+        throw $e;
+    }
+
+    public function topics()
+    {
+        return $this->topics;
+    }
+
+    public function users()
+    {
+        return $this->users;
+    }
+
+    public function inapp()
+    {
+        return $this->inapp;
+    }
+
 }

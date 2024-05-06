@@ -210,6 +210,182 @@ $signingKey = 'your-signing-key';
 $enagagespot->setSigningKey($signingKey);
 
 ```
+### Managing In-App Inbox Notifications
+
+In-app inbox notifications are messages that users can view within your application. Here's how you can manage them using the EngagespotClient:
+
+#### 1. Initialization
+
+Before you can interact with the in-app inbox notifications, you need to initialize the EngagespotClient with your API credentials:
+
+```php
+use Engagespot\EngagespotClient;
+
+// Your Engagespot API credentials
+$apiKey = 'your-api-key';
+$apiSecret = 'your-api-secret';
+
+// Create an instance of EngagespotClient
+$client = new EngagespotClient($apiKey, $apiSecret);
+```
+
+#### 2. Fetching In-App Notifications
+
+You can fetch in-app notifications for a specific user. This retrieves a list of notifications from the in-app inbox.
+
+```php
+$client->inapp()->fetch('john_doe_123', 1, 10);
+```
+
+- `userIdentifier`: The identifier of the user whose notifications you want to fetch.
+- `pageNo` (optional): Page number of the notifications (default is 1).
+- `limit` (optional): Maximum number of notifications per page (default is 10).
+
+#### 3. Marking a Notification as Read
+
+You can mark a notification as read once the user has viewed it.
+
+```php
+$client->inapp()->markNotificationAsRead('notification_123');
+```
+
+- `notificationId`: The ID of the notification to mark as read.
+
+#### 4. Marking a Notification as Unseen
+
+You can mark a notification as unseen to indicate that it hasn't been viewed by the user yet.
+
+```php
+$client->inapp()->markNotificationAsUnseen('notification_123');
+```
+
+- `notificationId`: The ID of the notification to mark as unseen.
+
+#### 5. Marking a Notification as Unread
+
+You can mark a notification as unread if the user has viewed it but hasn't interacted with it in a meaningful way.
+
+```php
+$client->inapp()->markNotificationAsUnread('notification_123');
+```
+
+- `notificationId`: The ID of the notification to mark as unread.
+
+#### 6. Deleting a Notification
+
+You can delete a notification from the in-app inbox if it's no longer relevant.
+
+```php
+$client->inapp()->deleteNotification('notification_123');
+```
+
+- `notificationId`: The ID of the notification to delete.
+
+---
+
+### Managing Topics
+
+Topics allow you to organize users into groups based on their interests or preferences. Here's how you can manage topics using the EngagespotClient:
+
+#### 1. Initialization
+
+Before you can interact with topics, you need to initialize the EngagespotClient with your API credentials:
+
+```php
+use Engagespot\EngagespotClient;
+
+// Your Engagespot API credentials
+$apiKey = 'your-api-key';
+$apiSecret = 'your-api-secret';
+
+// Create an instance of EngagespotClient
+$client = new EngagespotClient($apiKey, $apiSecret);
+```
+
+#### 2. Creating a Topic
+
+You can create a new topic with a name and an optional identifier. If an identifier is not provided, it will be generated from the name.
+
+```php
+$client->topics()->create('New Topic', 'new-topic');
+```
+
+- `name`: The name of the topic.
+- `identifier` (optional): The identifier of the topic. If not provided, it will be generated from the name.
+
+#### 3. Updating a Topic
+
+You can update the name of an existing topic.
+
+```php
+$client->topics()->update(123, 'Updated Topic Name');
+```
+
+- `topicId`: The ID of the topic to update.
+- `name`: The new name for the topic.
+
+#### 4. Deleting a Topic
+
+You can delete a topic.
+
+```php
+$client->topics()->delete(123);
+```
+
+- `topicId`: The ID of the topic to delete.
+
+#### 5. Subscribing Users to a Topic
+
+You can subscribe users to a topic.
+
+```php
+$users = [
+    ['identifier' => 'user1', 'channels' => ['web']],
+    ['identifier' => 'user2', 'channels' => ['email', 'push']],
+];
+
+$client->topics()->subscribeUser(123, $users);
+```
+
+- `topicId`: The ID of the topic to subscribe users to.
+- `users`: An array of user objects to subscribe. Each user object should have an identifier and channels.
+
+#### 6. Unsubscribing Users from a Topic
+
+You can unsubscribe users from a topic.
+
+```php
+$users = ['user1', 'user2'];
+
+$client->topics()->unsubscribeUser(123, $users);
+```
+
+- `topicId`: The ID of the topic to unsubscribe users from.
+- `users`: An array of user identifiers to unsubscribe.
+
+#### 7. Updating Notification Channels for a User in a Topic
+
+You can update the notification channels for a user in a topic.
+
+```php
+$client->topics()->updateChannel('user1', 123, ['email', 'push']);
+```
+
+- `identifier`: The identifier of the user whose channels are to be updated.
+- `topicId`: The ID of the topic.
+- `channels`: An array of notification channels for the user.
+
+#### 8. Listing Subscriptions of a User to All Topics
+
+You can list the subscriptions of a user to all topics.
+
+```php
+$client->topics()->listSubscriptionsOfUser('user1');
+```
+
+- `identifier`: The identifier of the user.
+
+---
 
 ## Exceptions
 
