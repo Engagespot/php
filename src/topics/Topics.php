@@ -41,7 +41,7 @@ class Topics
 
             return $this->getRequestHandler()->handleRequest(
                 'POST',
-                $this->client->getBaseUrl() . '/topics',
+                $this->client->getBaseUrl() . '/v3/topics',
                 ['name' => $name, 'identifier' => $identifier],
                 $this->client->getRequestHeaders()
             );
@@ -63,7 +63,7 @@ class Topics
         try {
             return $this->getRequestHandler()->handleRequest(
                 'PATCH',
-                $this->client->getBaseUrl() . '/topics/' . $topicId,
+                $this->client->getBaseUrl() . '/v3/topics/' . $topicId,
                 ['name' => $name],
                 $this->client->getRequestHeaders()
             );
@@ -84,7 +84,7 @@ class Topics
         try {
             return $this->getRequestHandler()->handleRequest(
                 'DELETE',
-                $this->client->getBaseUrl() . '/topics/' . $topicId,
+                $this->client->getBaseUrl() . '/v3/topics/' . $topicId,
                 [],
                 $this->client->getRequestHeaders()
             );
@@ -106,7 +106,7 @@ class Topics
         try {
             return $this->getRequestHandler()->handleRequest(
                 'POST',
-                $this->client->getBaseUrl() . '/topics/' . $topicId . '/users',
+                $this->client->getBaseUrl() . '/v3/topics/' . $topicId . '/users',
                 ['users' => $users],
                 $this->client->getRequestHeaders()
             );
@@ -128,7 +128,7 @@ class Topics
         try {
             return $this->getRequestHandler()->handleRequest(
                 'POST',
-                $this->client->getBaseUrl() . '/topics/' . $topicId . '/detachUsers',
+                $this->client->getBaseUrl() . '/v3/topics/' . $topicId . '/detachUsers',
                 ['users' => $users],
                 $this->client->getRequestHeaders()
             );
@@ -151,7 +151,7 @@ class Topics
         try {
             return $this->getRequestHandler()->handleRequest(
                 'PUT',
-                $this->client->getBaseUrl() . '/topics/' . $topicId . '/users/' . $identifier,
+                $this->client->getBaseUrl() . '/v3/topics/' . $topicId . '/users/' . $identifier,
                 ['channels' => $channels],
                 $this->client->getRequestHeaders()
             );
@@ -172,7 +172,7 @@ class Topics
         try {
             return $this->getRequestHandler()->handleRequest(
                 'GET',
-                $this->client->getBaseUrl() . '/topics/subscriptions/' . $identifier,
+                $this->client->getBaseUrl() . '/v3/topics/subscriptions/' . $identifier,
                 [],
                 $this->client->getRequestHeaders()
             );

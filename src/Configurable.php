@@ -90,7 +90,28 @@ trait Configurable
      */
     public function getBaseUrl()
     {
-        return $this->getConfig('baseUrl');
+        $region = $this->getRegion();
+
+        $baseUrl = rtrim($this->getConfig('baseUrl'), '/');
+
+        if ($region) {
+            switch ($region) {
+                case 'us-west-2':
+                    $baseUrl = 'https://api-us-west-2.engagespot.co';
+                    break;
+                case 'eu-central-1':
+                    $baseUrl = 'https://api-eu-central-1.engagespot.co';
+                    break;
+                case 'us':
+                    $baseUrl = 'https://api.engagespot.co';
+                    break;
+                default:
+                    $baseUrl = 'https://api.engagespot.co';
+                    break;
+            }
+        }
+
+        return $baseUrl;
     }
 
     /**
@@ -126,4 +147,27 @@ trait Configurable
     {
         $this->setConfig('signingKey', $signingKey);
     }
+
+    /**
+     * Get the region.
+     *
+     * @return string|null The region or null if not set.
+     */
+    public function getRegion()
+    {
+        return $this->getConfig('region');
+    }
+
+    /**
+     * Set the region.
+     *
+     * @param string $region The region identifier (e.g., 'us', 'eu').
+     *
+     * @return void
+     */
+    public function setRegion($region)
+    {
+        $this->setConfig('region', $region);
+    }
+
 }

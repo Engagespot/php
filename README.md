@@ -31,6 +31,8 @@ $apiKey = 'your-api-key';
 $apiSecret = 'your-api-secret';
 $signingKey = 'your-signing-key';
 
+$dataRegion = 'us-west-2'; // Optional
+
 // Create an instance of EngagespotClient
 $engagespot = new EngagespotClient($apiKey, $apiSecret);
 ```
@@ -56,6 +58,13 @@ $engagespot = new EngagespotClient($config);
 In this example, the `EngagespotClient` is initialized with an associative array that includes the API key, API secret, signing key, and base URL.
 
 Remember to replace `'your-api-key'`, `'your-api-secret'`, and `'your-signing-key'` with your actual Engagespot API credentials. The base URL is optional and defaults to 'https://api.engagespot.co/v3' if not provided. The signing key is also optional and can be omitted if not used.
+
+## Data Region
+Data Region is an optional parameter that allows you to specify the region where the data is stored. The default region is `us-west-2`.
+Learn more about [Data Region](https://documentation.engagespot.co/docs/concepts/data-region).
+- `dataRegion` (optional): Specify the region for data storage and processing. Available options:
+  - `us-west-2`: US West region
+  - `eu-central-1`: EU Central region
 
 ### Step 3: Sending a Notification
 
@@ -386,6 +395,42 @@ $client->topics()->listSubscriptionsOfUser('user1');
 - `identifier`: The identifier of the user.
 
 ---
+
+
+## Workflows
+You can manage workflows using the EngagespotClient: currently, only the cancellation of a running workflow is supported.
+
+### Initialization
+Before you can interact with workflows, you need to initialize the EngagespotClient with your API credentials:
+
+```php
+use Engagespot\EngagespotClient;
+
+// Your Engagespot API credentials
+$apiKey = 'your-api-key';
+$apiSecret = 'your-api-secret';
+
+$dataRegion = 'us-west-2'; // Optional
+
+// Create an instance of EngagespotClient
+$client = new EngagespotClient($apiKey, $apiSecret);
+``` 
+
+### Cancel a running workflow
+
+```php
+$cancellationData = [
+    'cancellationKey' => 'cancellationValue',
+    'cancelFor' => [
+        'recipients' => ['identifierOne', 'identifierTwo']
+    ]
+
+];
+$client->workflows()->cancelRun('workflowIdentifier', $cancellationData);
+```
+
+- `identifier`: The identifier of the workflow.
+- `cancellationData`: The cancellation data.
 
 ## Exceptions
 

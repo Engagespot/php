@@ -43,7 +43,7 @@ class Users
         try {
             return $this->getRequestHandler()->handleRequest(
                 'PUT',
-                $this->client->getBaseUrl() . '/users/' . $identifier,
+                $this->client->getBaseUrl() . '/v3/users/' . $identifier,
                 $profile,
                 $this->client->getRequestHeaders()
             );
@@ -71,7 +71,7 @@ class Users
         try {
             return $this->getRequestHandler()->handleRequest(
                 'DELETE',
-                $this->client->getBaseUrl() . '/users/' . $identifier,
+                $this->client->getBaseUrl() . '/v3/users/' . $identifier,
                 [],
                 $this->client->getRequestHeaders()
             );

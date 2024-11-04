@@ -37,7 +37,7 @@ class Inapp
         try {
             return $this->getRequestHandler()->handleRequest(
                 'GET',
-                $this->client->getBaseUrl() . '/notifications',
+                $this->client->getBaseUrl() . '/v3/notifications',
                 [
                     'pageNo' => $pageNo,
                     'limit' => $limit,
@@ -62,7 +62,7 @@ class Inapp
         try {
             return $this->getRequestHandler()->handleRequest(
                 'PATCH',
-                $this->client->getBaseUrl() . '/notifications/' . $notificationId . '/click',
+                $this->client->getBaseUrl() . '/v3/notifications/' . $notificationId . '/click',
                 ['read' => true],
                 $this->client->getRequestHeaders()
             );
@@ -83,7 +83,7 @@ class Inapp
         try {
             return $this->getRequestHandler()->handleRequest(
                 'DELETE',
-                $this->client->getBaseUrl() . '/notifications/' . $notificationId . '/views',
+                $this->client->getBaseUrl() . '/v3/notifications/' . $notificationId . '/views',
                 [],
                 $this->client->getRequestHeaders()
             );
@@ -104,7 +104,7 @@ class Inapp
         try {
             return $this->getRequestHandler()->handleRequest(
                 'DELETE',
-                $this->client->getBaseUrl() . '/notifications/' . $notificationId . '/reads',
+                $this->client->getBaseUrl() . '/v3/notifications/' . $notificationId . '/reads',
                 [],
                 $this->client->getRequestHeaders()
             );
@@ -125,7 +125,7 @@ class Inapp
         try {
             return $this->getRequestHandler()->handleRequest(
                 'DELETE',
-                $this->client->getBaseUrl() . '/notifications/' . $notificationId,
+                $this->client->getBaseUrl() . '/v3/notifications/' . $notificationId,
                 [],
                 $this->client->getRequestHeaders()
             );

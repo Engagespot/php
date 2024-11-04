@@ -16,6 +16,8 @@ class EngagespotClient
     protected $users;
     protected $inapp;
 
+    protected $workflows;
+
 
     /**
      * Constructor for EngagespotClient.
@@ -24,17 +26,18 @@ class EngagespotClient
      * @param string|null $apiSecret The API secret for authentication.
      * @param string|null $baseUrl The base URL for Engagespot API. Default is 'https://api.engagespot.co/v3'.
      * @param string|null $signingKey The signing key for JWT tokens.
+     * @param string|null $dataRegion The region identifier (e.g., 'us', 'eu').
      *
      * @throws \InvalidArgumentException When apiKey or apiSecret is empty.
      */
-    public function __construct($config, $apiSecret = null, $baseUrl = null, $signingKey = null)
+    public function __construct($config, $apiSecret = null, $baseUrl = null, $signingKey = null, $dataRegion = null)
     {
         if (is_array($config)) {
             // Configuration provided as an array
             $this->initializeFromArray($config);
         } else {
             // Configuration provided as individual parameters
-            $this->initialize($config, $apiSecret, $baseUrl, $signingKey);
+            $this->initialize($config, $apiSecret, $baseUrl, $signingKey, $dataRegion);
         }
 
         // Initialize the request handler.
@@ -42,6 +45,7 @@ class EngagespotClient
         $this->topics = new Topics($this);
         $this->users = new Users($this);
         $this->inapp = new Inapp($this);
+        $this->workflows = new Workflows($this);
     }
 
     /**
@@ -55,8 +59,9 @@ class EngagespotClient
         $apiSecret = $config['apiSecret'] ?? null;
         $baseUrl = $config['baseUrl'] ?? null;
         $signingKey = $config['signingKey'] ?? null;
+        $dataRegion = $config['dataRegion'] ?? null;
 
-        $this->initialize($apiKey, $apiSecret, $baseUrl, $signingKey);
+        $this->initialize($apiKey, $apiSecret, $baseUrl, $signingKey, $dataRegion);
     }
 
     /**
@@ -66,11 +71,12 @@ class EngagespotClient
      * @param string|null $apiSecret The API secret for authentication.
      * @param string|null $baseUrl The base URL for Engagespot API.
      * @param string|null $signingKey The signing key for JWT tokens.
+     * @param  string| null $dataRegion The region $name
      */
-    private function initialize($apiKey, $apiSecret = null, $baseUrl = null, $signingKey = null)
+    private function initialize($apiKey, $apiSecret = null, $baseUrl = null, $signingKey = null, $dataRegion = null)
     {
         if (empty($apiKey) || empty($apiSecret)) {
-            throw new \InvalidArgumentException('Both apiKey and ApiSecret are required');
+            throw new \InvalidArgumentException('Both apiKey and apiSecret are required');
         }
 
         // Set initial configuration options.
@@ -78,6 +84,7 @@ class EngagespotClient
         $this->setConfig('apiSecret', $apiSecret);
         $this->setConfig('baseUrl', rtrim($baseUrl ?? 'https://api.engagespot.co/v3', '/'));
         $this->setConfig('signingKey', $signingKey);
+        $this->setConfig('dataRegion', $dataRegion ?? 'us'); // Default to 'us' if not provided.
     }
 
     /**
@@ -91,7 +98,7 @@ class EngagespotClient
     {
         return $this->requestHandler->handleRequest(
             'POST',
-            $this->getBaseUrl() . '/notifications',
+            $this->getBaseUrl() . '/v3/notifications',
             $data,
             $this->getRequestHeaders()
         );
@@ -115,7 +122,7 @@ class EngagespotClient
 
         return $this->requestHandler->handleRequest(
             'PUT',
-            $this->getBaseUrl() . '/users/' . $identifier,
+            $this->getBaseUrl() . '/v3/users/' . $identifier,
             $profile,
             $this->getRequestHeaders()
         );
@@ -173,7 +180,7 @@ class EngagespotClient
         $additionalConfig = $this->getAllConfig();
 
         // Remove keys that should not be included in headers.
-        $keysToRemove = ['apiKey', 'apiSecret', 'baseUrl', 'signingKey'];
+        $keysToRemove = ['apiKey', 'apiSecret', 'baseUrl', 'signingKey', 'dataRegion'];
         foreach ($keysToRemove as $key) {
             unset($additionalConfig[$key]);
         }
@@ -209,7 +216,7 @@ class EngagespotClient
         try {
             return $this->requestHandler->handleRequest(
                 'POST',
-                $this->getBaseUrl() . '/notifications/categories',
+                $this->getBaseUrl() . '/v3/notifications/categories',
                 ['identifier' => $identifier, 'name' => $categoryName],
                 $this->getRequestHeaders()
             );
@@ -230,7 +237,7 @@ class EngagespotClient
         try {
             return $this->requestHandler->handleRequest(
                 'DELETE',
-                $this->getBaseUrl() . "/notifications/categories/{$categoryId}",
+                $this->getBaseUrl() . "/v3/notifications/categories/{$categoryId}",
                 [],
                 $this->getRequestHeaders()
             );
@@ -266,6 +273,11 @@ class EngagespotClient
     public function inapp()
     {
         return $this->inapp;
+    }
+
+    public function workflows()
+    {
+        return $this->workflows;
     }
 
 }
