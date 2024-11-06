@@ -97,13 +97,16 @@ trait Configurable
         if ($region) {
             switch ($region) {
                 case 'us-west-2':
-                    $baseUrl = 'https://api-us-west-2.engagespot.co';
+                    $baseUrl = 'https://api.engagespot.co';
                     break;
                 case 'eu-central-1':
-                    $baseUrl = 'https://api-eu-central-1.engagespot.co';
+                    $baseUrl = 'https://api-eu.engagespot.co';
                     break;
                 case 'us':
                     $baseUrl = 'https://api.engagespot.co';
+                    break;
+                case 'eu':
+                    $baseUrl = 'https://api-eu.engagespot.co';
                     break;
                 default:
                     $baseUrl = 'https://api.engagespot.co';
