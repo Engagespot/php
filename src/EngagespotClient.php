@@ -3,6 +3,7 @@
 namespace Engagespot;
 
 use Firebase\JWT\JWT;
+use GuzzleHttp\Exception\RequestException;
 
 /**
  * EngagespotClient - A client for interacting with Engagespot API.
@@ -10,7 +11,13 @@ use Firebase\JWT\JWT;
 class EngagespotClient
 {
     use Configurable;
-    protected $requestHandler;
+    public $requestHandler;
+    protected $topics;
+    protected $users;
+    protected $inapp;
+
+    protected $workflows;
+
 
     /**
      * Constructor for EngagespotClient.
@@ -19,21 +26,26 @@ class EngagespotClient
      * @param string|null $apiSecret The API secret for authentication.
      * @param string|null $baseUrl The base URL for Engagespot API. Default is 'https://api.engagespot.co/v3'.
      * @param string|null $signingKey The signing key for JWT tokens.
+     * @param string|null $dataRegion The region identifier (e.g., 'us', 'eu').
      *
      * @throws \InvalidArgumentException When apiKey or apiSecret is empty.
      */
-    public function __construct($config, $apiSecret = null, $baseUrl = null, $signingKey = null)
+    public function __construct($config, $apiSecret = null, $baseUrl = null, $signingKey = null, $dataRegion = null)
     {
         if (is_array($config)) {
             // Configuration provided as an array
             $this->initializeFromArray($config);
         } else {
             // Configuration provided as individual parameters
-            $this->initialize($config, $apiSecret, $baseUrl, $signingKey);
+            $this->initialize($config, $apiSecret, $baseUrl, $signingKey, $dataRegion);
         }
 
         // Initialize the request handler.
         $this->requestHandler = new RequestHandler();
+        $this->topics = new Topics($this);
+        $this->users = new Users($this);
+        $this->inapp = new Inapp($this);
+        $this->workflows = new Workflows($this);
     }
 
     /**
@@ -47,8 +59,9 @@ class EngagespotClient
         $apiSecret = $config['apiSecret'] ?? null;
         $baseUrl = $config['baseUrl'] ?? null;
         $signingKey = $config['signingKey'] ?? null;
+        $dataRegion = $config['dataRegion'] ?? null;
 
-        $this->initialize($apiKey, $apiSecret, $baseUrl, $signingKey);
+        $this->initialize($apiKey, $apiSecret, $baseUrl, $signingKey, $dataRegion);
     }
 
     /**
@@ -58,11 +71,12 @@ class EngagespotClient
      * @param string|null $apiSecret The API secret for authentication.
      * @param string|null $baseUrl The base URL for Engagespot API.
      * @param string|null $signingKey The signing key for JWT tokens.
+     * @param  string| null $dataRegion The region $name
      */
-    private function initialize($apiKey, $apiSecret = null, $baseUrl = null, $signingKey = null)
+    private function initialize($apiKey, $apiSecret = null, $baseUrl = null, $signingKey = null, $dataRegion = null)
     {
         if (empty($apiKey) || empty($apiSecret)) {
-            throw new \InvalidArgumentException('Both apiKey and ApiSecret are required');
+            throw new \InvalidArgumentException('Both apiKey and apiSecret are required');
         }
 
         // Set initial configuration options.
@@ -70,6 +84,7 @@ class EngagespotClient
         $this->setConfig('apiSecret', $apiSecret);
         $this->setConfig('baseUrl', rtrim($baseUrl ?? 'https://api.engagespot.co/v3', '/'));
         $this->setConfig('signingKey', $signingKey);
+        $this->setConfig('dataRegion', $dataRegion ?? 'us'); // Default to 'us' if not provided.
     }
 
     /**
@@ -83,7 +98,7 @@ class EngagespotClient
     {
         return $this->requestHandler->handleRequest(
             'POST',
-            $this->getBaseUrl() . '/notifications',
+            $this->getBaseUrl() . '/v3/notifications',
             $data,
             $this->getRequestHeaders()
         );
@@ -107,7 +122,7 @@ class EngagespotClient
 
         return $this->requestHandler->handleRequest(
             'PUT',
-            $this->getBaseUrl() . '/users/' . $identifier,
+            $this->getBaseUrl() . '/v3/users/' . $identifier,
             $profile,
             $this->getRequestHeaders()
         );
@@ -152,7 +167,7 @@ class EngagespotClient
      *
      * @return array The request headers.
      */
-    private function getRequestHeaders()
+    public function getRequestHeaders()
     {
         // Basic headers required for Engagespot API.
         $headers = [
@@ -165,7 +180,7 @@ class EngagespotClient
         $additionalConfig = $this->getAllConfig();
 
         // Remove keys that should not be included in headers.
-        $keysToRemove = ['apiKey', 'apiSecret', 'baseUrl', 'signingKey'];
+        $keysToRemove = ['apiKey', 'apiSecret', 'baseUrl', 'signingKey', 'dataRegion'];
         foreach ($keysToRemove as $key) {
             unset($additionalConfig[$key]);
         }
@@ -187,4 +202,82 @@ class EngagespotClient
     {
         return $this->config;
     }
+
+    /**
+     * Create a category in Engagespot.
+     *
+     * @param string $identifier The unique identifier for the category.
+     * @param string $categoryName The name of the category.
+     *
+     * @return mixed The response from the API.
+     */
+    public function createCategory($identifier, $categoryName)
+    {
+        try {
+            return $this->requestHandler->handleRequest(
+                'POST',
+                $this->getBaseUrl() . '/v3/notifications/categories',
+                ['identifier' => $identifier, 'name' => $categoryName],
+                $this->getRequestHeaders()
+            );
+        } catch (RequestException $e) {
+            $this->handleRequestException($e);
+        }
+    }
+
+    /**
+     * Delete a category from Engagespot.
+     *
+     * @param int $categoryId The ID of the category to delete.
+     *
+     * @return mixed The response from the API.
+     */
+    public function deleteCategory($categoryId)
+    {
+        try {
+            return $this->requestHandler->handleRequest(
+                'DELETE',
+                $this->getBaseUrl() . "/v3/notifications/categories/{$categoryId}",
+                [],
+                $this->getRequestHeaders()
+            );
+        } catch (RequestException $e) {
+            $this->handleRequestException($e);
+        }
+    }
+
+
+
+    /**
+     * Handle Guzzle HTTP request exception.
+     *
+     * @param RequestException $e The Guzzle HTTP request exception.
+     *
+     * @throws RequestException
+     */
+    private function handleRequestException(RequestException $e)
+    {
+        throw $e;
+    }
+
+    public function topics()
+    {
+        return $this->topics;
+    }
+
+    public function users()
+    {
+        return $this->users;
+    }
+
+    public function inapp()
+    {
+        return $this->inapp;
+    }
+
+    public function workflows()
+    {
+        return $this->workflows;
+    }
+
 }
