@@ -31,7 +31,7 @@ $apiKey = 'your-api-key';
 $apiSecret = 'your-api-secret';
 $signingKey = 'your-signing-key';
 
-$dataRegion = 'us-west-2'; // Optional
+$dataRegion = 'us'; // Optional
 
 // Create an instance of EngagespotClient
 $engagespot = new EngagespotClient($apiKey, $apiSecret);
@@ -60,11 +60,11 @@ In this example, the `EngagespotClient` is initialized with an associative array
 Remember to replace `'your-api-key'`, `'your-api-secret'`, and `'your-signing-key'` with your actual Engagespot API credentials. The base URL is optional and defaults to 'https://api.engagespot.co/v3' if not provided. The signing key is also optional and can be omitted if not used.
 
 ## Data Region
-Data Region is an optional parameter that allows you to specify the region where the data is stored. The default region is `us-west-2`.
+Data Region is an optional parameter that allows you to specify the region where the data is stored. The default region is `us`.
 Learn more about [Data Region](https://documentation.engagespot.co/docs/concepts/data-region).
 - `dataRegion` (optional): Specify the region for data storage and processing. Available options:
-  - `us-west-2`: US West region
-  - `eu-central-1`: EU Central region
+  - `us`: US West region
+  - `eu`: EU Central region
 
 ### Step 3: Sending a Notification
 
@@ -410,7 +410,7 @@ use Engagespot\EngagespotClient;
 $apiKey = 'your-api-key';
 $apiSecret = 'your-api-secret';
 
-$dataRegion = 'us-west-2'; // Optional
+$dataRegion = 'us'; // Optional
 
 // Create an instance of EngagespotClient
 $client = new EngagespotClient($apiKey, $apiSecret);
