@@ -1,8 +1,10 @@
 <?php
 
-namespace Engagespot;
+namespace Engagespot\topics;
+
 
 use GuzzleHttp\Exception\RequestException;
+use Engagespot\EngagespotClient;
 
 class Topics
 {

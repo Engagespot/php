@@ -1,8 +1,9 @@
 <?php
 
-namespace Engagespot;
+namespace Engagespot\workflows;
 
 use GuzzleHttp\Exception\RequestException;
+use Engagespot\EngagespotClient;
 
 class Workflows
 {
