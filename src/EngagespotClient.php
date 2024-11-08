@@ -2,6 +2,10 @@
 
 namespace Engagespot;
 
+use Engagespot\inapp\Inapp;
+use Engagespot\topics\Topics;
+use Engagespot\users\Users;
+use Engagespot\workflows\Workflows;
 use Firebase\JWT\JWT;
 use GuzzleHttp\Exception\RequestException;
 

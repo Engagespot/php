@@ -1,8 +1,10 @@
 <?php
 
-namespace Engagespot;
+namespace Engagespot\users;
+
 
 use GuzzleHttp\Exception\RequestException;
+use Engagespot\EngagespotClient;
 
 class Users
 {
