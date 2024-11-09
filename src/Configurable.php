@@ -158,7 +158,7 @@ trait Configurable
      */
     public function getRegion()
     {
-        return $this->getConfig('region');
+        return $this->getConfig('dataRegion');
     }
 
     /**
@@ -170,7 +170,7 @@ trait Configurable
      */
     public function setRegion($region)
     {
-        $this->setConfig('region', $region);
+        $this->setConfig('dataRegion', $region);
     }
 
 }
