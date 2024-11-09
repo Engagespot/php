@@ -86,7 +86,7 @@ class EngagespotClient
         // Set initial configuration options.
         $this->setConfig('apiKey', $apiKey);
         $this->setConfig('apiSecret', $apiSecret);
-        $this->setConfig('baseUrl', rtrim($baseUrl ?? 'https://api.engagespot.co/v3', '/'));
+        $this->setConfig('baseUrl', rtrim($baseUrl ?? 'https://api.engagespot.co', '/'));
         $this->setConfig('signingKey', $signingKey);
         $this->setConfig('dataRegion', $dataRegion ?? 'us'); // Default to 'us' if not provided.
     }
